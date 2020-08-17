@@ -1,0 +1,55 @@
+.logo-1 {
+    position: absolute;
+    top: 0px;
+    left: -30px;
+    height: 20px;
+    width: 20px;
+    border-radius: 2px;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    background: #ff2c2c;
+}
+
+.logo-2 {
+    position: absolute;
+    top: 0px;
+    left: -30px;
+    height: 20px;
+    width: 20px;
+    border-radius: 2px;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    background: #ffb328;
+}
+
+.logo-3 {
+    position: absolute;
+    top: 0px;
+    left: -30px;
+    height: 20px;
+    width: 20px;
+    border-radius: 2px;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    background: #ffd628;
+}
+
+.logo-more-than-3 {
+    position: absolute;
+    top: 0px;
+    left: -30px;
+    height: 20px;
+    width: 20px;
+    border-radius: 2px;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    background: #a6a6a6;
+}

@@ -1,0 +1,9 @@
+
+read_history date is incorrect
+
+Upload New Chapter still can proceed even though no images 
+
+stop user from rating if not logged in
+
+Session may expire. It's dangerous to use it in .php like TopupHistorySearchHandle.php
+Some code that depend on $_SESSION for SQL parameter may fail, eg $_SESSION['user_id']

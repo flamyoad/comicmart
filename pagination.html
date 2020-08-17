@@ -1,0 +1,57 @@
+<ul class="pagination justify-content-center">
+
+    <!--Generate "Previous" button if current page number is more than 1 -->
+    <?php if ($pageno > 1) :
+        $previousPageIndex = $pageno - 1;
+        $previousPageLink = "?page=" . $previousPageIndex ?>
+
+        <li class="page-item">
+            <a class="page-link" href="<?php echo $previousPageLink ?>">
+                Previous
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="javascript:void(0)">...</a>
+        </li>
+
+    <?php endif; ?>
+
+
+    <?php for ($i = $paginationStart; $i <= $paginationEnd; $i++) : ?>
+
+        <!-- If current index is the page chosen, show it as active pagination link -->
+        <?php if ($i == $pageno) :
+            $pageLink = "?page=" . $pageno ?>
+            <li class="page-item active">
+                <a class="page-link" href="<?php echo $pageLink ?>">
+                    <?php echo $pageno ?>
+                </a>
+            </li>
+
+            <!-- Otherwise, show it as normal pagination link -->
+        <?php else :
+            $pageLink = "?page=" . $i; ?>
+
+            <li class="page-item">
+                <a class="page-link" href="<?php echo $pageLink ?>">
+                    <?php echo $i ?>
+                </a>
+            </li>
+
+        <?php endif; ?>
+
+    <?php endfor; ?>
+
+
+    <?php if ($pageno < $totalPages) :
+        $nextPageIndex = $pageno + 1;
+        $nextPageLink = "?page=" . $nextPageIndex;
+    ?>
+        <li class="page-item">
+            <a class="page-link" href="<?php echo $nextPageLink ?>">
+                Next
+            </a>
+        </li>
+    <?php endif; ?>
+
+</ul>
