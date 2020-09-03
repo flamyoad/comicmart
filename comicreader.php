@@ -59,6 +59,9 @@ if (isset($_SESSION['user_id'])) {
 
     ReadHistory::insert($userId, $mangaId, $currentChapterId);
 }
+
+// Increment view count
+Manga::incrementViewCount($currentChapter->getId());
 ?>
 
 <html>

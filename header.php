@@ -251,11 +251,7 @@ require_once "models/User.php";
             </li>
 
             <li>
-                <a>Popular</a>
-            </li>
-
-            <li>
-                <a>Latest</a>
+                <a href="popular.php">Popular</a>
             </li>
 
         </ul>

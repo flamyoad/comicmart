@@ -13,7 +13,6 @@ session_start();
     <script src="scripts/jquery-3.4.1.js"></script>
     <script src="css/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script src="library/OwlCarousel2-2.3.4/dist/owl.carousel.min.js"></script>
-
 </head>
 
 <style>
@@ -291,7 +290,6 @@ session_start();
             <div class="latest-released-banner" style="margin-left: 16px;">
                 <i class="far fa-clock latest-released-icon"></i>
                 <span class="banner-title">Popular Releases</span>
-
             </div>
 
             <div class="owl-carousel owl-theme owl-loaded" style="padding: 24px 32px 0px 32px;">
@@ -376,11 +374,35 @@ session_start();
                 <div class="right">
                     <div class="top-manga-text">
                         Top Ranking
-                        <a style="float: right;" href="">More</a>
+                        <a style="float: right;" href="popular.php">More</a>
                     </div>
 
                     <ul class="top-manga-list">
-                        <li>
+                        <?php foreach(Manga::getPopularManga(3) as $key => $manga): 
+                            $count = $key + 1;
+                            $logoClassName = "logo-" . $count;
+                            $latestChapter = Chapter::getLatestChapter($manga->getId());
+                        ?>
+
+                            <li>
+                                <span class=<?php echo $logoClassName?>>
+                                    <?php echo $count?>
+                                </span>
+                                <p class="top-manga-list-title" style="margin-bottom: 5px;">
+                                    <a href=<?php echo $manga->getLink(); ?>>
+                                        <?php echo $manga->getTitle(); ?>
+                                    </a>
+                                </p>
+                                <p class="top-manga-list-sub">
+                                    <a href=<?php echo $latestChapter->getLink(); ?>>
+                                        <?php echo $latestChapter->getTitle(); ?>
+                                    </a>
+                                </p>
+                            </li>
+                            
+                        <?php endforeach; ?>
+
+                        <!-- <li>
                             <span class="logo-1">1</span>
                             <p class="top-manga-list-title" style="margin-bottom: 5px;">
                                 <a href="">A Story About Female Knights</a>
@@ -418,7 +440,7 @@ session_start();
                             <p class="top-manga-list-sub">
                                 <a href="">Chapter 111</a>
                             </p>
-                        </li>
+                        </li> -->
 
                     </ul>
 
