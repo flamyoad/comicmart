@@ -5,11 +5,14 @@ require_once "models/Manga.php";
 require_once "models/Chapter.php";
 
 $userId = $_SESSION["user_id"];
-
-$publishedMangas = Manga::getPublishedMangas($userId);
 ?>
 
 <script src="scripts/jquery-3.4.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
 
 <style>
     .my-container {
@@ -202,7 +205,6 @@ $publishedMangas = Manga::getPublishedMangas($userId);
         color: black;
         font-size: 20pt;
     }
-
 </style>
 
 <html>
@@ -233,7 +235,7 @@ $publishedMangas = Manga::getPublishedMangas($userId);
 
                 <li>
                     <a href="account-settings-topuphistory.php"">
-                        <i class="fa fa-credit-card nav-icons" aria-hidden="true"></i>
+                        <i class=" fa fa-credit-card nav-icons" aria-hidden="true"></i>
                         <span>Wallet</span>
                     </a>
                 </li>
@@ -244,7 +246,7 @@ $publishedMangas = Manga::getPublishedMangas($userId);
                         <span>Uploaded Works</span>
                     </a>
                 </li>
-                
+
                 <li>
                     <a href="account-settings-earnings.php">
                         <i class="fa fa-dollar nav-icons" aria-hidden="true"></i>
@@ -256,79 +258,107 @@ $publishedMangas = Manga::getPublishedMangas($userId);
         </nav>
 
         <div>
-            <p class="content-title">Uploaded Works</p>
+            <p class="content-title">Earnings</p>
             <div class="content">
+                <p style="text-align: center; color:dimgrey; font-family: Roboto">Earnings of uploaded comics</p>
+                <div>
 
-                <ul class="manga-list">
-                    <!-- <li class="manga-item">
-                        <a href="">
-                            <img class="manga-cover" src="img/hxh.jpg">
-                        </a>
-                        <h3 class="manga-title">
-                            <a href="">Hunter x Hunter</a>
-                        </h3>
-                        <p class="manga-description">Chapter 1: The beginning of adventure</p>
-                    </li> -->
+                    <div class="chart-container" style="margin:auto; height:400px; width:400px">
+                        <canvas id="earning_chart" width="400" height="400"></canvas>
+                    </div>
 
-                    <?php foreach ($publishedMangas as $manga) : ?>
-                        <li class="manga-item">
-                            <a href="javascript:void(0)" onclick="openModal(<?php echo $manga->getId() ?>)">
-                                <img class="manga-cover" src="<?php echo $manga->getCoverImage(); ?>">
-                            </a>
-
-                            <h3 class="manga-title">
-                                <a href="javascript:void(0)" onclick="openModal(<?php echo $manga->getId() ?>)">
-                                    <?php echo $manga->getTitle(); ?>
-                                </a>
-                            </h3>
-
-                            <p class="manga-description">
-                                <?php
-                                $latestChapter = Chapter::getLatestChapter($manga->getID());
-                                echo $latestChapter->getTitle();
-                                ?>
-                            </p>
-
-                        </li>
-                    <?php endforeach; ?>
-
-                </ul>
-
-                <div class="modalBackground">
-                    <div class="modelWindow">
-                        <a href="javascript:void(0)" class="close-modal">
-                            <i class="fa fa-times" aria-hidden="true" style="color: white; margin: 15px;"></i>
-                        </a>
-                        <div class="modalContent">
-
+                    <div class="table-container" style="margin-top: 36px;">
+                        <div>
+                            <table id="earnings_table" class="table table-bordered table-hover" style="width:100%">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Book Title</th>
+                                        <th>Total earnings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr>
+                                <td>Tiger Nixon</td>
+                                <td>System Architect</td>
+                            </tr> -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
-                <a class="fab" href="upload-works.php">+</a>
-
             </div>
+
         </div>
 
     </div>
 
-
 </body>
-<html>
 
 <script>
-    function openModal(mangaId) {
-        $(".modalContent").load(("uploaded-manga-details.php?id=" + mangaId), function() {
-            $(".modalBackground").css("display", "block");
-        });
-    }
+    // Table data
+    $(document).ready(function() {
+        $('#earnings_table').DataTable({
+            scrollX: true,
+            pagingType: "numbers",
+            processing: true,
+            serverSide: false,
+            ajax: {
+                url: "GetEarningsHandle.php"
+            },
+            columns: [{
+                    "data": "title",
+                },
 
-    $(".close-modal").click(function() {
-        $(".modalBackground").css("display", "none");
+                {
+                    "data": "totalEarnings"
+                }
+            ]
+        });
     });
 
-    // Dismiss modal dialog if click on background
-    // $(window).click(function(e) {
-    //     $(".modalBackground").css("display", "none");
-    // });
+    // var data = {
+    //     datasets: [{
+    //         label: 'Colors',
+    //         data: [555, 33, 44, 550, 11, 0, 0, 2, 1],
+    //         backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"]
+    //     }],
+    //     labels: ['Hunter x Hunter', 'Hunter x Hunter', 'Hunter x Hunter', 'Hunter x Hunter', 'e', 'f', 'g', 'h', 'i']
+    // }
+
+    var options = {
+        responsive: true,
+        title: {
+            display: false,
+            text: "Earnings for every comic"
+        }
+    }
+
+    $.ajax({
+        url: 'GetEarningsChartHandle.php',
+        dataType: 'json',
+        success: function(response) {
+            var ctx = document.getElementById('earning_chart').getContext('2d');
+            console.log(response.data);
+
+            var options = {
+                responsive: true,
+                title: {
+                    display: false,
+                    text: "Earnings for every comic"
+                }
+            }
+
+            var pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: response.title,
+                    datasets: [{
+                        data: response.data,
+                        backgroundColor: ["red", "blue", "purple", "yellow", "orange", "pink", "green"], 
+                    }]
+                },
+                options: options
+            });
+        }
+    })
 </script>

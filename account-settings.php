@@ -142,6 +142,13 @@ session_start();
                     </a>
                 </li>
 
+                <li>
+                    <a href="account-settings-earnings.php">
+                        <i class="fa fa-dollar nav-icons" aria-hidden="true"></i>
+                        <span>Earnings</span>
+                    </a>
+                </li>
+
             </ul>
         </nav>
 
