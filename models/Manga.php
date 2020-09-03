@@ -160,6 +160,18 @@ class Manga implements JsonSerializable {
         return $row['COUNT(*)'];
     }
 
+    static function incrementViewCount($mangaId) {
+        $sql = <<< SQL
+            UPDATE `manga`
+            SET `view_count` = `view_count` + 1
+            WHERE `id` = ?
+        SQL;
+
+        $statement = Database::getConnection()->prepare($sql);
+        $statement->bind_param("i", $mangaId);
+        $statement->execute();
+    }
+
     static function toObject($row) {
         return new Manga(
             $row['id'],
